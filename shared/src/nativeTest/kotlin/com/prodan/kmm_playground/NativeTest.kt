@@ -3,7 +3,7 @@ package com.prodan.kmm_playground
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-class CommonTest {
+class NativeTest {
 
     @Test
     fun testExample() {

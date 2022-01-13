@@ -3,10 +3,10 @@ package com.prodan.kmm_playground
 import kotlin.test.Test
 import kotlin.test.assertTrue
 
-class IosGreetingTest {
+class PlatformTest {
 
     @Test
     fun testExample() {
-        assertTrue(Greeting().greeting().contains("iOS"), "Check iOS is mentioned")
+        assertTrue(Greeting().greeting().contains("ios"), "Check ios is mentioned")
     }
 }

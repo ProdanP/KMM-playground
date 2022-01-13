@@ -3,10 +3,10 @@ package com.prodan.kmm_playground
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-class AndroidGreetingTest {
+class PlatformTest {
 
     @Test
     fun testExample() {
-        assertTrue("Check Android is mentioned", Greeting().greeting().contains("Android"))
+        assertTrue("Check android is mentioned", Greeting().greeting().contains("android"))
     }
 }

@@ -1,54 +1,85 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
     id("com.android.library")
 }
 
 kotlin {
     android()
-    
-    listOf(
-        iosX64(),
-        iosArm64(),
-        //iosSimulatorArm64() sure all ios dependencies support this target
-    ).forEach {
-        it.binaries.framework {
-            baseName = "shared"
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+    js(IR) {
+        useCommonJs()
+        browser {
+            webpackTask {
+                output.libraryTarget = "commonjs2"
+            }
         }
+        binaries.executable()
     }
 
     sourceSets {
-        val commonMain by getting
+        /* Main source sets */
+        val commonMain by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+                implementation("co.touchlab:kermit:1.0.0")
+                implementation("io.ktor:ktor-client-core:2.0.0-beta-1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+            }
+        }
+        val androidMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-okhttp:2.0.0-beta-1")
+            }
+        }
+        val iosX64Main by getting 
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val jsMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-js:2.0.0-beta-1")
+            }
+        }
+        val iosMain by creating {
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:2.0.0-beta-1")
+            }
+        }
+        val nativeMain by creating
+
+        /* Main hierarchy */
+        androidMain.dependsOn(commonMain)
+        iosMain.dependsOn(nativeMain)
+        iosX64Main.dependsOn(iosMain)
+        iosArm64Main.dependsOn(iosMain)
+        iosSimulatorArm64Main.dependsOn(iosMain)
+        jsMain.dependsOn(commonMain)
+        nativeMain.dependsOn(commonMain)
+
+        /* Test source sets */
         val commonTest by getting {
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation(kotlin("test"))
             }
         }
-        val androidMain by getting
-        val androidTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
-                implementation("junit:junit:4.13.2")
-            }
-        }
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        //val iosSimulatorArm64Main by getting
-        val iosMain by creating {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            //iosSimulatorArm64Main.dependsOn(this)
-        }
-        val iosX64Test by getting
+        val androidTest by getting
+        val iosX64Test by getting 
         val iosArm64Test by getting
-        //val iosSimulatorArm64Test by getting
-        val iosTest by creating {
-            dependsOn(commonTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            //iosSimulatorArm64Test.dependsOn(this)
-        }
+        val iosSimulatorArm64Test by getting
+        val jsTest by getting
+        val iosTest by creating
+        val nativeTest by creating
+
+        /* Test hierarchy */
+        androidTest.dependsOn(commonTest)
+        iosTest.dependsOn(nativeTest)
+        iosX64Test.dependsOn(iosTest)
+        iosArm64Test.dependsOn(iosTest)
+        iosSimulatorArm64Test.dependsOn(iosTest)
+        jsTest.dependsOn(commonTest)
+        nativeTest.dependsOn(commonTest)
     }
 }
 

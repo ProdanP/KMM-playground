@@ -1,5 +1,7 @@
 package com.prodan.kmm_playground
 
-expect class Platform() {
-    val platform: String
+expect val platform: String
+
+class Greeting {
+    fun greeting() = "Hello, $platform!"
 }
