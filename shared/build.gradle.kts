@@ -27,11 +27,16 @@ kotlin {
                 implementation("co.touchlab:kermit:1.0.0")
                 implementation("io.ktor:ktor-client-core:2.0.0-beta-1")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+                implementation("io.ktor:ktor-client-logging:2.0.0-beta-1")
+                implementation("io.ktor:ktor-client-serialization:2.0.0-beta-1")
+                implementation("io.ktor:ktor-client-json:2.0.0-beta-1")
+                implementation("io.ktor:ktor-client-content-negotiation:2.0.0-beta-1")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:2.0.0-beta-1")
             }
         }
         val androidMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-okhttp:2.0.0-beta-1")
+                implementation("io.ktor:ktor-client-android:2.0.0-beta-1")
             }
         }
         val iosX64Main by getting 
